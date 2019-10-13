@@ -55,7 +55,7 @@ function generateKabupaten($kode_prov)
                     $newQab = ucwords($newQa);
                     // $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\KSK ' . $newV . '\\*.docx';
                     $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\*.docx';
-                    $arraykab[] = array('Provinsi' => $prov, 'Kabupaten' => $newQab, 'Link' => $newFilePath1, 'Kecamatan' => $d->NAMA);
+                    $arraykab[] = array('Provinsi' => $prov, 'Kabupaten' => $d->NAMA, 'Link' => $newFilePath1, 'Kecamatan' => $newQab);
                 } else if ($d->NAMA[3] == 'A') {
                     $newV = str_replace("KAB. ", "", $d->NAMA);
                     $newK = str_replace("KOTA", "BPS KOTA", $d->NAMA);
@@ -65,7 +65,7 @@ function generateKabupaten($kode_prov)
                     $newQab = ucwords($newQa);
                     // $newFilePath1 = $GLOBALS['directory'] . $prov . '\\' . $newK . '\\KSK ' . $newV . '\\*.docx';
                     $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\*.docx';
-                    $arraykab[] = array('Provinsi' => $prov, 'Kabupaten' => $newQab, 'Link' => $newFilePath1, 'Kecamatan' => $d->NAMA);
+                    $arraykab[] = array('Provinsi' => $prov, 'Kabupaten' => $d->NAMA, 'Link' => $newFilePath1, 'Kecamatan' => $newQab);
                 }
             }
         }
@@ -112,30 +112,30 @@ function generateKecamatan($kode_prov)
     foreach ($arraykab as $kab) {
         foreach ($data as $d) {
             if ($kab['kode_kab'] == $d->MST_KODE_WILAYAH && $kab['nama'][1] == 'A') {
-                $newV = str_replace("KAB. ", "", $kab['nama']);
+                $newV = str_replace("KAB.", "KSK KABUPATEN", $kab['nama']);
                 $newK = str_replace("KAB.", "BPS KABUPATEN", $kab['nama']);
-                $newC = str_replace("KEC.", "KSK", $d->NAMA);
                 $newQ = str_replace("KAB. ", "", $kab['nama']);
                 $newQa = strtolower($newQ);
                 $newQab = ucwords($newQa);
+                $newC = str_replace("KEC.", "KSK", $d->NAMA);
                 $newCa = str_replace("KSK ", "", $newC);
                 $newCam = strtolower($newCa);
                 $newCama = ucwords($newCam);
-                // $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\KSK ' . $newV . '\\' . $newC . '.docx';
-                $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\' . $newV . '\\*.docx';
+                $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\KSK ' . $newV . '\\' . $newC . '.docx';
+                // $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\' . $newV . '\\*.docx';
                 $arraykec[] = array('Provinsi' => $prov, 'Kabupaten' => $newQab, 'Link' => $newFilePath1, 'Kecamatan' => $newCama);
             } elseif ($kab['kode_kab'] == $d->MST_KODE_WILAYAH && $kab['nama'][1] == 'O') {
-                $newV = str_replace("KAB. ", "", $kab['nama']);
+                $newV = str_replace("KOTA", "KSK KOTA", $kab['nama']);
                 $newK = str_replace("KOTA", "BPS KOTA", $kab['nama']);
-                $newC = str_replace("KEC.", "KSK", $d->NAMA);
                 $newQ = str_replace("KOTA ", "", $kab['nama']);
                 $newQa = strtolower($newQ);
                 $newQab = ucwords($newQa);
+                $newC = str_replace("KEC.", "KSK", $d->NAMA);
                 $newCa = str_replace("KSK ", "", $newC);
                 $newCam = strtolower($newCa);
                 $newCama = ucwords($newCam);
-                // $newFilePath1 = $GLOBALS['directory'] . $prov . '\\' . $newK . '\\KSK ' . $newV . '\\' . $newC . '.docx';
-                $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\' . $newV . '\\*.docx';
+                $newFilePath1 = $GLOBALS['directory'] . $prov . '\\' . $newK . '\\KSK ' . $newV . '\\' . $newC . '.docx';
+                // $newFilePath1 =  $GLOBALS['directory'] . $prov . '\\' . $newK . '\\' . $newV . '\\*.docx';
                 $arraykec[] = array('Provinsi' => $prov, 'Kabupaten' => $newQab, 'Link' => $newFilePath1, 'Kecamatan' => $newCama);
             }
         }
@@ -210,33 +210,31 @@ function generateFolderProvinsi($kode_prov)
             }
         }
     }
-
+    echo $GLOBALS['directory'] . $prov;
+    '<br>';
     foreach ($arraykab as $kab) {
-        if (!file_exists($GLOBALS['directory'] . $prov . '/' . $kab)) {
-            mkdir($GLOBALS['directory'] . $prov . '/' . $kab, 0777, true);
+        if (!file_exists($GLOBALS['directory'] . $prov . '\\' . $kab)) {
+            mkdir($GLOBALS['directory'] . $prov . '\\' . $kab, 0777, true);
             if ($kab[5] == 'A') {
-                $src = "utkKabupaten";
-                $dst = $GLOBALS['directory'] . $prov . "/" . $kab;
+                $src = $GLOBALS['directory'] . "utkKabupaten";
+                $dst = $GLOBALS['directory'] . $prov . "\\" . $kab;
                 custom_copy($src, $dst);
                 array_push($kabfolder, $kab);
-                // $new = str_replace('BPS KABUPATEN', 'KSK', $kab);
-                // mkdir($GLOBALS['directory'] . $prov . '/' . $kab . '/' . $new, 0777, true);
             } else {
                 $src = $GLOBALS['directory'] . "utkKota";
-                $dst = $GLOBALS['directory'] . $prov . "/" . $kab;
+                $dst = $GLOBALS['directory'] . $prov . "\\" . $kab;
                 custom_copy($src, $dst);
                 array_push($kabfolder, $kab);
-                // $new = str_replace('BPS KOTA', 'KSK KOTA', $kab);
-                // mkdir($GLOBALS['directory'] . $prov . '/' . $kab . '/' . $new, 0777, true);
             }
-            echo 'Folder' . $prov . 'Berhasil Dibuat';
+            echo '<br>';
+            echo 'Folder ' . $kab . ' Berhasil Dibuat';
+            echo '</br>';
         } else {
             echo '<br>';
             echo 'Folder ' . $kab . ' tersedia';
             echo '</br>';
         }
     };
-    echo $GLOBALS['directory'] . $prov;
 }
 
 function generateFolderKecamatan($kode_prov)
@@ -267,28 +265,36 @@ function generateFolderKecamatan($kode_prov)
     foreach ($arraykab as $kab) {
         foreach ($data as $d) {
             if ($kab['kode_kab'] == $d->MST_KODE_WILAYAH && $kab['nama'][1] == 'A') {
-                $file1 = 'KSK Kabupaten';
-                $newV = str_replace("KAB. ", "", $kab['nama']);
-                $newK = str_replace("KAB.", "BPS KABUPATEN", $kab['nama']);
+                //Generate Folder Kecamatan
+                $folderBpsKab = str_replace('KAB.', 'BPS KABUPATEN', $kab['nama']);
+                $folderKsk = str_replace('KAB.', 'KSK KABUPATEN', $kab['nama']);
+                if (!file_exists($GLOBALS['directory'] . $prov . '\\' . $folderBpsKab . '\\' . $folderKsk)) {
+                    mkdir($GLOBALS['directory'] . $prov . '\\' . $folderBpsKab . '\\' . $folderKsk, 0777, true);
+                }
+                // Move document 
+                $file = 'KSK Kabupaten';
                 $newC = str_replace("KEC.", "KSK", $d->NAMA);
-                $currentFilePath1 = $GLOBALS['directory'] . 'KSK/' . $file1 . '.docx';
-                $newFilePath1 =  $GLOBALS['directory'] . $prov . '/' . $newK . '/KSK ' . $newV . '/' . $newC . '.docx';
-                copy($currentFilePath1, $newFilePath1);
+                $currentFilePath = $GLOBALS['directory'] . 'KSK\\' . $file . '.docx';
+                $newFilePath_old =  $GLOBALS['directory'] . $prov . '\\' . $folderBpsKab . '\\' . $folderKsk . '\\' . $file . '.docx';
+                $newFilePath_new =  $GLOBALS['directory'] . $prov . '\\' . $folderBpsKab . '\\' . $folderKsk . '\\' . $newC . '.docx';
+                copy($currentFilePath, $newFilePath_old);
+                rename($newFilePath_old, $newFilePath_new);
             } elseif ($kab['kode_kab'] == $d->MST_KODE_WILAYAH && $kab['nama'][1] == 'O') {
-                $file1 = 'KSK Kota';
-                $newV = str_replace("KAB. ", "", $kab['nama']);
-                $newK = str_replace("KOTA", "BPS KOTA", $kab['nama']);
+                //Generate Folder Kecamatan
+                $folderBpsKab = str_replace('KOTA', 'BPS KOTA', $kab['nama']);
+                $folderKsk = str_replace('KOTA', 'KSK KOTA', $kab['nama']);
+                if (!file_exists($GLOBALS['directory'] . $prov . '\\' . $folderBpsKab . '\\' . $folderKsk)) {
+                    mkdir($GLOBALS['directory'] . $prov . '\\' . $folderBpsKab . '\\' . $folderKsk, 0777, true);
+                }
+                // Move and rename document 
+                $file = 'KSK Kota';
                 $newC = str_replace("KEC.", "KSK", $d->NAMA);
-                $currentFilePath1 = $GLOBALS['directory'] . 'KSK/' . $file1 . '.docx';
-                $newFilePath1 = $GLOBALS['directory'] .  $prov . '/' . $newK . '/KSK ' . $newV . '/' . $newC . '.docx';
-                copy($currentFilePath1, $newFilePath1);
+                $currentFilePath = $GLOBALS['directory'] . 'KSK\\' . $file . '.docx';
+                $newFilePath_old = $GLOBALS['directory'] .  $prov . '\\' . $folderBpsKab . '\\' . $folderKsk . '\\' . $file . '.docx';
+                $newFilePath_new =  $GLOBALS['directory'] . $prov . '\\' . $folderBpsKab . '\\' . $folderKsk . '\\' . $newC . '.docx';
+                copy($currentFilePath, $newFilePath_old);
+                rename($newFilePath_old, $newFilePath_new);
             }
         }
     }
-}
-
-function generateFolder($kode_prov)
-{
-    generateFolderProvinsi($kode_prov);
-    // generateFolderKecamatan($kode_prov);
 }
