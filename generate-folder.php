@@ -56,64 +56,68 @@
             </ul>
         </div>
     </nav>
-    <h1>Generate Folder</h1>
-    <div>
-        <form action="" method="post">
-            <label>Kode Provinsi :</label>
-            <!-- <input style="border-color:black" type="text" name="kode_prov" id="kode_prov" autofocus> -->
-            <!-- <input type="text" style="border-color:black" name="directory" id="directory"> -->
-            <select name="kode_prov" id="kode_prov" selected="selected">
-                <option value="00">Pilih Provinsi</option>
-                <option value="06">ACEH</option>
-                <option value="22">BALI</option>
-                <option value="28">BANTEN</option>
-                <option value="26">BENGKULU</option>
-                <option value="04">D.I. YOGYAKARTA</option>
-                <option value="01">DKI JAKARTA</option>
-                <option value="30">GORONTALO</option>
-                <option value="10">JAMBI</option>
-                <option value="02">JAWA BARAT</option>
-                <option value="03">JAWA TENGAH</option>
-                <option value="05">JAWA TIMUR</option>
-                <option value="13">KALIMANTAN BARAT</option>
-                <option value="15">KALIMANTAN SELATAN</option>
-                <option value="14">KALIMANTAN TENGAH</option>
-                <option value="16">KALIMANTAN TIMUR</option>
-                <option value="34">KALIMANTAN UTARA</option>
-                <option value="29">KEP. BANGKA BELITUNG</option>
-                <option value="31">KEP. RIAU</option>
-                <option value="12">LAMPUNG</option>
-                <option value="21">MALUKU</option>
-                <option value="27">MALUKU UTARA</option>
-                <option value="23">NTB</option>
-                <option value="24">NTT</option>
-                <option value="25">PAPUA</option>
-                <option value="32">PAPUA BARAT</option>
-                <option value="09">RIAU</option>
-                <option value="33">SULAWESI BARAT</option>
-                <option value="19">SULAWESI SELATAN</option>
-                <option value="18">SULAWESI TENGAH</option>
-                <option value="20">SULAWESI TENGGARA</option>
-                <option value="17">SULAWESI UTARA</option>
-                <option value="08">SULAWESI BARAT</option>
-                <option value="11">SUMATERA SELATAN</option>
-                <option value="07">SUMATERA UTARA</option>
+    <div class="container">
+        <h1>Generate Folder</h1>
+        <div>
+            <form action="" method="post">
+                <label>Kode Provinsi :</label>
+                <!-- <input style="border-color:black" type="text" name="kode_prov" id="kode_prov" autofocus> -->
+                <!-- <input type="text" style="border-color:black" name="directory" id="directory"> -->
+                <select name="kode_prov" id="kode_prov" selected="selected">
+                    <option value="00">Pilih Provinsi</option>
+                    <option value="06">ACEH</option>
+                    <option value="22">BALI</option>
+                    <option value="28">BANTEN</option>
+                    <option value="26">BENGKULU</option>
+                    <option value="04">D.I. YOGYAKARTA</option>
+                    <option value="01">DKI JAKARTA</option>
+                    <option value="30">GORONTALO</option>
+                    <option value="10">JAMBI</option>
+                    <option value="02">JAWA BARAT</option>
+                    <option value="03">JAWA TENGAH</option>
+                    <option value="05">JAWA TIMUR</option>
+                    <option value="13">KALIMANTAN BARAT</option>
+                    <option value="15">KALIMANTAN SELATAN</option>
+                    <option value="14">KALIMANTAN TENGAH</option>
+                    <option value="16">KALIMANTAN TIMUR</option>
+                    <option value="34">KALIMANTAN UTARA</option>
+                    <option value="29">KEP. BANGKA BELITUNG</option>
+                    <option value="31">KEP. RIAU</option>
+                    <option value="12">LAMPUNG</option>
+                    <option value="21">MALUKU</option>
+                    <option value="27">MALUKU UTARA</option>
+                    <option value="23">NTB</option>
+                    <option value="24">NTT</option>
+                    <option value="25">PAPUA</option>
+                    <option value="32">PAPUA BARAT</option>
+                    <option value="09">RIAU</option>
+                    <option value="33">SULAWESI BARAT</option>
+                    <option value="19">SULAWESI SELATAN</option>
+                    <option value="18">SULAWESI TENGAH</option>
+                    <option value="20">SULAWESI TENGGARA</option>
+                    <option value="17">SULAWESI UTARA</option>
+                    <option value="08">SULAWESI BARAT</option>
+                    <option value="11">SUMATERA SELATAN</option>
+                    <option value="07">SUMATERA UTARA</option>
 
 
-            </select>
-            <button type="submit" name="submit" id="submit">Submit</button>
-        </form>
-    </div>
-    <div>
-        <?php require 'functions.php';
-        if (isset($_POST["kode_prov"])) {
-            $array = generateFolder($_POST["kode_prov"]);
-        } else {
-            $array = array();
-        }
-
-        // $array = generateKabupaten('19');
-        ?>
+                </select>
+                <input type="radio" name="kecamatan" value="yes">Generate Kecamatan
+                <button type="submit" name="submit" id="submit">Submit</button>
+            </form>
+        </div>
+        <div>
+            <?php require 'functions.php';
+            if (isset($_POST["kode_prov"]) && isset($_POST["kecamatan"])) {
+                generateFolderProvinsi($_POST["kode_prov"]);
+                generateFolderKecamatan($_POST["kode_prov"]);
+            } elseif (isset($_POST["kode_prov"])) {
+                generateFolderProvinsi($_POST["kode_prov"]);
+            } else {
+                $array = array();
+            }
+            ?>
+        </div>
     </div>
 </body>
 
