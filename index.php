@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <?php require 'functions.php';
-if (isset($_POST["kode_prov"])) {
+if (isset($_POST["kode_prov"]) && $_POST['level'] == "kabupaten") {
     $array = generateKabupaten($_POST["kode_prov"]);
+} elseif (isset($_POST["kode_prov"]) && $_POST['level'] == "kecamatan") {
+    $array = generateKecamatan($_POST["kode_prov"]);
 } else {
     $array = generateKabupaten('00');
 }
@@ -64,7 +66,7 @@ $arrayprov = generateProvinsi();
                     <a class="nav-link" href="index.php">Generate Data </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="generate-folder.php">Generate Folder</a>
+                    <a class="nav-link" href="#">Generate Folder</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
@@ -72,100 +74,104 @@ $arrayprov = generateProvinsi();
             </ul>
         </div>
     </nav>
-    <h1>Generate Data</h1>
-    <div>
-        <form action="" method="post">
-            <label>Kode Provinsi :</label>
-            <!-- <input style="border-color:black" type="text" name="kode_prov" id="kode_prov" autofocus> -->
-            <!-- <input type="text" style="border-color:black" name="directory" id="directory"> -->
-            <select name="kode_prov" id="kode_prov" selected="selected">
-                <option value="00">Pilih Provinsi</option>
-                <option value="06">ACEH</option>
-                <option value="22">BALI</option>
-                <option value="28">BANTEN</option>
-                <option value="26">BENGKULU</option>
-                <option value="04">D.I. YOGYAKARTA</option>
-                <option value="01">DKI JAKARTA</option>
-                <option value="30">GORONTALO</option>
-                <option value="10">JAMBI</option>
-                <option value="02">JAWA BARAT</option>
-                <option value="03">JAWA TENGAH</option>
-                <option value="05">JAWA TIMUR</option>
-                <option value="13">KALIMANTAN BARAT</option>
-                <option value="15">KALIMANTAN SELATAN</option>
-                <option value="14">KALIMANTAN TENGAH</option>
-                <option value="16">KALIMANTAN TIMUR</option>
-                <option value="34">KALIMANTAN UTARA</option>
-                <option value="29">KEP. BANGKA BELITUNG</option>
-                <option value="31">KEP. RIAU</option>
-                <option value="12">LAMPUNG</option>
-                <option value="21">MALUKU</option>
-                <option value="27">MALUKU UTARA</option>
-                <option value="23">NTB</option>
-                <option value="24">NTT</option>
-                <option value="25">PAPUA</option>
-                <option value="32">PAPUA BARAT</option>
-                <option value="09">RIAU</option>
-                <option value="33">SULAWESI BARAT</option>
-                <option value="19">SULAWESI SELATAN</option>
-                <option value="18">SULAWESI TENGAH</option>
-                <option value="20">SULAWESI TENGGARA</option>
-                <option value="17">SULAWESI UTARA</option>
-                <option value="08">SULAWESI BARAT</option>
-                <option value="11">SUMATERA SELATAN</option>
-                <option value="07">SUMATERA UTARA</option>
+    <div class="container">
+        <h1>Generate Data</h1>
+        <div>
+            <form action="" method="post">
+                <label>Kode Provinsi :</label>
+                <!-- <input style="border-color:black" type="text" name="kode_prov" id="kode_prov" autofocus> -->
+                <!-- <input type="text" style="border-color:black" name="directory" id="directory"> -->
+                <select name="kode_prov" id="kode_prov" selected="selected">
+                    <option value="00">Pilih Provinsi</option>
+                    <option value="06">ACEH</option>
+                    <option value="22">BALI</option>
+                    <option value="28">BANTEN</option>
+                    <option value="26">BENGKULU</option>
+                    <option value="04">D.I. YOGYAKARTA</option>
+                    <option value="01">DKI JAKARTA</option>
+                    <option value="30">GORONTALO</option>
+                    <option value="10">JAMBI</option>
+                    <option value="02">JAWA BARAT</option>
+                    <option value="03">JAWA TENGAH</option>
+                    <option value="05">JAWA TIMUR</option>
+                    <option value="13">KALIMANTAN BARAT</option>
+                    <option value="15">KALIMANTAN SELATAN</option>
+                    <option value="14">KALIMANTAN TENGAH</option>
+                    <option value="16">KALIMANTAN TIMUR</option>
+                    <option value="34">KALIMANTAN UTARA</option>
+                    <option value="29">KEP. BANGKA BELITUNG</option>
+                    <option value="31">KEP. RIAU</option>
+                    <option value="12">LAMPUNG</option>
+                    <option value="21">MALUKU</option>
+                    <option value="27">MALUKU UTARA</option>
+                    <option value="23">NTB</option>
+                    <option value="24">NTT</option>
+                    <option value="25">PAPUA</option>
+                    <option value="32">PAPUA BARAT</option>
+                    <option value="09">RIAU</option>
+                    <option value="33">SULAWESI BARAT</option>
+                    <option value="19">SULAWESI SELATAN</option>
+                    <option value="18">SULAWESI TENGAH</option>
+                    <option value="20">SULAWESI TENGGARA</option>
+                    <option value="17">SULAWESI UTARA</option>
+                    <option value="08">SULAWESI BARAT</option>
+                    <option value="11">SUMATERA SELATAN</option>
+                    <option value="07">SUMATERA UTARA</option>
 
 
-            </select>
-            <button type="submit" name="submit" id="submit">Submit</button>
-        </form>
-    </div>
-    <br>
-    <H2>PROV. <?php
-                if (isset($_POST['kode_prov'])) {
-                    foreach ($arrayprov as $ar) {
-                        if ($_POST['kode_prov'] ==  $ar['kodeprov']) {
-                            print_r($ar['nama']);
+                </select>
+                <input type="radio" name="level" value="kabupaten">Kabupaten
+                <input type="radio" name="level" value="kecamatan">Kecamatan
+                <button type="submit" name="submit" id="submit">Submit</button>
+            </form>
+        </div>
+        <br>
+        <H2>PROV. <?php
+                    if (isset($_POST['kode_prov'])) {
+                        foreach ($arrayprov as $ar) {
+                            if ($_POST['kode_prov'] ==  $ar['kodeprov']) {
+                                print_r($ar['nama']);
+                            }
                         }
                     }
-                }
-                ?></H2>
-    <br>
+                    ?></H2>
+        <br>
 
-    <table id="t01" width="100%">
+        <table id="t01" width="100%">
 
-        <tr>
-            <th width="5%">No</th>
-            <th width="25%">
-                Kabupaten
-            </th>
-            <th width="20%">
-                Copy Kabupaten
-            </th>
-            <th width="10%"></th>
-            <th width="30%">
-                Link
-            </th>
-            <th width="10%"></th>
-        </tr>
-        <?php foreach ($array as $ar) : ?>
             <tr>
-                <td><?= $a++; ?></td>
-                <td>
-                    <?php print_r($ar['Kecamatan']); ?>
-                </td>
-                <td>
-                    <input type="text" value="<?php print_r($ar['Kabupaten']); ?>" id="pilih<?= $k++; ?>" readonly />
-                </td>
-                <td><button type="button" onclick="copyText2(<?= $l++; ?>)">Copy</button></td>
-                </td>
-                <td>
-                    <input type="text" value="<?php print_r($ar['Link']); ?>" id="pilih<?= $i++; ?>" readonly />
-                </td>
-                <td><button type="button" onclick="copyText(<?= $j++; ?>)">Copy</button></td>
+                <th width="5%">No</th>
+                <th width="25%">
+                    Kabupaten
+                </th>
+                <th width="20%">
+                    Copy
+                </th>
+                <th width="10%"></th>
+                <th width="30%">
+                    Link
+                </th>
+                <th width="10%"></th>
             </tr>
-        <?php endforeach; ?>
-    </table>
+            <?php foreach ($array as $ar) : ?>
+                <tr>
+                    <td><?= $a++; ?></td>
+                    <td>
+                        <?php print_r($ar['Kabupaten']); ?>
+                    </td>
+                    <td>
+                        <input type="text" value="<?php print_r($ar['Kecamatan']); ?>" id="pilih<?= $k++; ?>" readonly />
+                    </td>
+                    <td><button type="button" onclick="copyText2(<?= $l++; ?>)">Copy</button></td>
+                    </td>
+                    <td>
+                        <input type="text" value="<?php print_r($ar['Link']); ?>" id="pilih<?= $i++; ?>" readonly />
+                    </td>
+                    <td><button type="button" onclick="copyText(<?= $j++; ?>)">Copy</button></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
     <script type="text/javascript">
         function copyText(j) {
             /* Get the text field */
